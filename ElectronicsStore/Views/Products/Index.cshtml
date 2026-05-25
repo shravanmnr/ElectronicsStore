@@ -1,0 +1,48 @@
+@model IEnumerable<ElectronicsStore.Core.Application.DTOs.ProductDto>
+
+@{
+    ViewBag.Title = "Products";
+}
+
+<h2>Products</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Image URL</th>
+        <th>Category</th>
+        <th></th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>@item.Name</td>
+        <td>@item.Description</td>
+        <td>@item.Price</td>
+        <td>@item.Stock</td>
+        <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="@item.ImageUrl">@item.ImageUrl</td>
+        <td>@(item.CategoryName ?? "No Category")</td>
+        <td>
+            @using (Html.BeginForm("Add", "Cart", new { productId = item.Id }, FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="returnUrl" value="@Request.RawUrl" />
+                <button type="submit" class="btn btn-sm btn-success">Add to Cart</button>
+            }
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+        </td>
+    </tr>
+}
+
+</table>

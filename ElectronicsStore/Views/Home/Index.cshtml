@@ -1,0 +1,51 @@
+@model List<ElectronicsStore.Models.Product>
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="category-filter">
+    <label>Category</label>
+    <form method="get" action="/Home/Index" style="display:inline;margin:0;">
+        <select name="categoryId" onchange="this.form.submit()" class="form-control" style="width:200px;display:inline;">
+            <option value="">-- Select --</option>
+            @foreach (var category in ViewBag.Categories)
+            {
+                <option value="@category.Id" @(ViewBag.SelectedCategory == category.Id ? "selected" : "")>
+                    @category.Name
+                </option>
+            }
+        </select>
+    </form>
+</div>
+
+<h2>Products</h2>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var product in Model)
+    {
+        <div class="col">
+            <div class="product-card">
+                <div class="d-flex justify-content-between align-items-start">
+                    <span class="category-label">@(product.Category != null ? product.Category.Name : "")</span>
+                    @if (product.Category != null)
+                    {
+                        <span class="brand-tag">@product.Category.Name</span>
+                    }
+                </div>
+                <div class="product-name">@product.Name</div>
+                <div class="product-desc">@product.Description</div>
+                <div class="card-footer-row">
+                    @using (Html.BeginForm("Add", "Cart", new { productId = product.Id }, FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="returnUrl" value="@Request.RawUrl" />
+                        <button type="submit" class="btn-add-cart">ADD TO CART</button>
+                    }
+                    <span class="stock-text">@product.Stock @(product.Stock == 1 ? "unit" : "units")</span>
+                    <span class="price-badge">$@product.Price.ToString("0.00")</span>
+                </div>
+            </div>
+        </div>
+    }
+</div>

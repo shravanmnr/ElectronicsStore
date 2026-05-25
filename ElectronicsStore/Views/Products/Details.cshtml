@@ -1,0 +1,32 @@
+@model ElectronicsStore.Models.Product
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Product</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Name</dt>
+        <dd>@Model.Name</dd>
+
+        <dt>Description</dt>
+        <dd>@Model.Description</dd>
+
+        <dt>Price</dt>
+        <dd>@Model.Price</dd>
+
+        <dt>Stock</dt>
+        <dd>@Model.Stock</dd>
+
+        <dt>Image URL</dt>
+        <dd>@Model.ImageUrl</dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", "Products", new { id = Model.Id }, null) |
+    @Html.ActionLink("Back to List", "Index", "Products")
+</p>

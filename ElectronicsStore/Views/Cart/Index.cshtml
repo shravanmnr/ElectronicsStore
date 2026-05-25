@@ -1,0 +1,78 @@
+@model ElectronicsStore.Models.Cart
+
+@{
+    ViewBag.Title = "Shopping Cart";
+}
+
+<h2>Shopping Cart</h2>
+
+<div class="cart-wrapper">
+@if (!Model.Items.Any())
+{
+    <div class="alert alert-info mt-3">
+        Your cart is empty. @Html.ActionLink("Browse products", "Index", "Home")
+    </div>
+}
+else
+{
+    <table class="table table-bordered mt-3">
+        <thead class="table-light">
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <form action="@Url.Action("UpdateItem", "Cart")" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="productId" value="@item.ProductId" />
+                    <tr>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.ImageUrl))
+                            {
+                                <img src="@item.ImageUrl" style="width:40px;height:40px;object-fit:contain;margin-right:8px;" />
+                            }
+                            @item.Name
+                        </td>
+                        <td>@item.Price.ToString("C")</td>
+                        <td>
+                            <input type="number" name="quantity" value="@item.Quantity" min="1"
+                                   class="form-control d-inline-block" style="width:80px" />
+                        </td>
+                        <td>@item.Subtotal.ToString("C")</td>
+                        <td style="white-space:nowrap">
+                            <button type="submit" name="action" value="update"
+                                    class="btn btn-sm btn-outline-secondary">Update</button>
+                            <button type="submit" name="action" value="remove"
+                                    class="btn btn-sm btn-danger ms-1">Remove</button>
+                        </td>
+                    </tr>
+                </form>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2"></td>
+                <td><strong>Total</strong></td>
+                <td><strong>@Model.Total.ToString("C")</strong></td>
+                <td>
+                    @using (Html.BeginForm("Clear", "Cart", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-sm btn-warning">Clear Cart</button>
+                    }
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div class="mt-2">
+        @Html.ActionLink("Continue Shopping", "Index", "Home", null, new { @class = "btn btn-secondary" })
+    </div>
+}
+</div>
