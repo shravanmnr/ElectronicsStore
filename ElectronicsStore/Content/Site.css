@@ -222,16 +222,16 @@ input, select, textarea {
 
 /* ── Footer ───────────────────────────────────────── */
 footer {
-    background-color: var(--red);
-    color: #fff;
+    background-color: var(--yellow-bg);
+    color: #888;
     padding: 14px 20px;
     margin-top: 40px;
-    border-radius: 0;
+    border-top: 1px solid var(--border);
 }
 
 footer p {
     margin: 0;
-    color: #fff;
+    color: #888;
 }
 
 /* ── DL (Details pages) ───────────────────────────── */
