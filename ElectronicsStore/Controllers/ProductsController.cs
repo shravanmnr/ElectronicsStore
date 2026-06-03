@@ -36,7 +36,7 @@ namespace ElectronicsStore.Controllers
         public ActionResult Details(int? id)
         {
             if (id == null)
-                return BadRequest("Product ID is required. ");
+                return BadRequest("Product ID is required.");
 
             var productDto = _productService.GetProductById(id.Value);
             if (productDto == null)
