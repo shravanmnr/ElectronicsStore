@@ -10,20 +10,22 @@ namespace ElectronicsStore.Controllers
 {
 	public class HomeController : Controller
 	{
-		private ApplicationDbContext db = new ApplicationDbContext();
 		public ActionResult Index(int? categoryId)
 		{
-			IQueryable<Product> products = db.Products.Include("Category");
-
-			if (categoryId != null)
+			using (var db = new ApplicationDbContext())
 			{
-				products = products.Where(p => p.CategoryId == categoryId);
+				IQueryable<Product> products = db.Products.Include("Category");
+
+				if (categoryId != null)
+				{
+					products = products.Where(p => p.CategoryId == categoryId);
+				}
+
+				ViewBag.Categories = db.Categories.ToList();
+				ViewBag.SelectedCategory = categoryId;
+
+				return View(products.ToList());
 			}
-
-			ViewBag.Categories = db.Categories.ToList();
-			ViewBag.SelectedCategory = categoryId;
-
-			return View(products.ToList());
 		}
 
 		public ActionResult About()
